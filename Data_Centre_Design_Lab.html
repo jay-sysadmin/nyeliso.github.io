@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tier-1 Data Centre Design | Likubangwa Jay-Z Nyeliso</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #0a0a0f;
+      --surface: #111118;
+      --border: #1e1e2e;
+      --accent: #00e5ff;
+      --accent2: #7c3aed;
+      --text: #e2e8f0;
+      --muted: #64748b;
+      --green: #10b981;
+      --yellow: #f59e0b;
+      --red: #ef4444;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: 'Syne', sans-serif; overflow-x: hidden; }
+
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 1000; opacity: 0.4;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.2rem 3rem;
+      border-bottom: 1px solid var(--border);
+      background: rgba(10,10,15,0.9);
+      backdrop-filter: blur(12px);
+    }
+    .nav-back {
+      font-family: 'Space Mono', monospace; font-size: 0.75rem;
+      color: var(--muted); text-decoration: none; letter-spacing: 0.1em;
+      text-transform: uppercase; display: flex; align-items: center; gap: 0.5rem;
+      transition: color 0.2s;
+    }
+    .nav-back:hover { color: var(--accent); }
+    .nav-label {
+      font-family: 'Space Mono', monospace; font-size: 0.7rem;
+      color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase;
+    }
+
+    /* HERO */
+    .hero {
+      padding: 10rem 3rem 5rem; position: relative; overflow: hidden;
+      border-bottom: 1px solid var(--border);
+    }
+    .hero-grid {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(0,229,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,229,255,0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+    .hero-glow {
+      position: absolute; width: 600px; height: 600px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(0,229,255,0.05) 0%, transparent 70%);
+      top: -100px; right: -50px; pointer-events: none;
+    }
+    .hero-content { position: relative; z-index: 2; max-width: 960px; }
+
+    .report-tag {
+      font-family: 'Space Mono', monospace; font-size: 0.65rem;
+      color: var(--accent); letter-spacing: 0.2em; text-transform: uppercase;
+      padding: 0.3rem 0.85rem;
+      border: 1px solid rgba(0,229,255,0.3); background: rgba(0,229,255,0.05);
+      display: inline-block; margin-bottom: 1.5rem;
+    }
+    .hero-title {
+      font-size: clamp(2.5rem, 6vw, 5rem); font-weight: 800;
+      line-height: 1; letter-spacing: -0.03em; margin-bottom: 1.25rem;
+    }
+    .hero-title span {
+      display: block; color: transparent;
+      -webkit-text-stroke: 1px rgba(0,229,255,0.35);
+    }
+    .hero-meta { display: flex; flex-wrap: wrap; gap: 2.5rem; margin-top: 2rem; }
+    .meta-item { font-family: 'Space Mono', monospace; font-size: 0.65rem; color: var(--muted); letter-spacing: 0.05em; }
+    .meta-item strong { display: block; color: var(--text); font-size: 0.82rem; margin-top: 0.25rem; }
+
+    /* STATS BAR */
+    .stats-bar {
+      display: grid; grid-template-columns: repeat(5, 1fr);
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+    }
+    .stat-item {
+      padding: 1.75rem 1.5rem; border-right: 1px solid var(--border); text-align: center;
+    }
+    .stat-item:last-child { border-right: none; }
+    .stat-value {
+      font-size: 1.55rem; font-weight: 800; color: var(--accent);
+      font-family: 'Space Mono', monospace; line-height: 1; margin-bottom: 0.4rem;
+    }
+    .stat-label {
+      font-family: 'Space Mono', monospace; font-size: 0.58rem;
+      color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase;
+    }
+
+    /* SECTIONS */
+    .section { padding: 5rem 3rem; border-bottom: 1px solid var(--border); }
+    .section-num {
+      font-family: 'Space Mono', monospace; font-size: 0.65rem;
+      color: var(--accent); letter-spacing: 0.25em; text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+    .section-title {
+      font-size: clamp(1.6rem, 3vw, 2.4rem); font-weight: 800;
+      letter-spacing: -0.02em; margin-bottom: 2.5rem;
+    }
+
+    /* TABLES */
+    .data-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; margin-bottom: 2rem; }
+    .data-table th {
+      font-family: 'Space Mono', monospace; font-size: 0.58rem;
+      letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted);
+      padding: 0.75rem 1rem; text-align: left;
+      border-bottom: 2px solid var(--border); background: var(--surface);
+    }
+    .data-table td {
+      padding: 0.72rem 1rem; border-bottom: 1px solid var(--border);
+      color: var(--text); vertical-align: top; line-height: 1.5;
+    }
+    .data-table tr:hover td { background: rgba(0,229,255,0.015); }
+    .data-table td:first-child { color: var(--muted); font-family: 'Space Mono', monospace; font-size: 0.7rem; }
+    .data-table .total-row td { color: var(--accent); font-weight: 700; border-top: 2px solid var(--border); }
+
+    /* FORMULA / CALC BLOCKS */
+    .formula-block {
+      background: var(--surface); border: 1px solid var(--border);
+      border-left: 3px solid var(--accent2);
+      padding: 1.5rem 2rem; margin: 1.5rem 0;
+      font-family: 'Space Mono', monospace; font-size: 0.78rem;
+      color: var(--text); line-height: 1.9;
+    }
+    .formula-block .formula-title {
+      color: var(--accent2); font-size: 0.6rem; letter-spacing: 0.15em;
+      text-transform: uppercase; margin-bottom: 0.75rem;
+    }
+    .formula-block.green { border-left-color: var(--green); }
+    .formula-block.green .formula-title { color: var(--green); }
+
+    .calc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem; margin: 1.5rem 0; }
+    .calc-card {
+      background: var(--surface); border: 1px solid var(--border);
+      padding: 1.75rem; position: relative; overflow: hidden;
+    }
+    .calc-card::before {
+      content: ''; position: absolute; top: 0; left: 0;
+      width: 3px; height: 100%; background: var(--accent);
+    }
+    .calc-card.green::before { background: var(--green); }
+    .calc-label {
+      font-family: 'Space Mono', monospace; font-size: 0.58rem;
+      color: var(--muted); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.75rem;
+    }
+    .calc-value {
+      font-size: 2rem; font-weight: 800; color: var(--accent);
+      font-family: 'Space Mono', monospace; line-height: 1; margin-bottom: 0.5rem;
+    }
+    .calc-card.green .calc-value { color: var(--green); }
+    .calc-note { font-size: 0.78rem; color: var(--muted); line-height: 1.6; }
+
+    /* SPECS */
+    .specs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 0.75rem; margin-bottom: 2rem; }
+    .spec-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 0.75rem 1rem; background: var(--surface); border: 1px solid var(--border); font-size: 0.83rem;
+    }
+    .spec-key { color: var(--muted); font-family: 'Space Mono', monospace; font-size: 0.68rem; letter-spacing: 0.05em; }
+    .spec-val { color: var(--text); font-weight: 600; text-align: right; }
+
+    /* HEAT BARS */
+    .heat-bar { margin: 1rem 0; }
+    .heat-bar-label {
+      display: flex; justify-content: space-between;
+      font-family: 'Space Mono', monospace; font-size: 0.68rem;
+      color: var(--muted); margin-bottom: 0.4rem;
+    }
+    .heat-bar-track {
+      height: 5px; background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border); overflow: hidden;
+    }
+    .heat-bar-fill { height: 100%; }
+
+    /* CONCLUSION */
+    .conclusion-box {
+      background: var(--surface); border: 1px solid var(--border);
+      border-top: 3px solid var(--green); padding: 2.5rem; margin-top: 1rem;
+    }
+    .conclusion-box p { color: var(--muted); line-height: 1.8; margin-bottom: 1rem; font-size: 0.92rem; }
+    .conclusion-box p:last-child { margin-bottom: 0; }
+
+    /* REFERENCES */
+    .ref-list { list-style: none; display: flex; flex-direction: column; gap: 0.75rem; }
+    .ref-list li {
+      font-family: 'Space Mono', monospace; font-size: 0.68rem; color: var(--muted);
+      padding-left: 2.5rem; position: relative; line-height: 1.7;
+    }
+    .ref-list li::before { content: attr(data-ref); position: absolute; left: 0; color: var(--accent); }
+    .ref-list a { color: var(--accent); text-decoration: none; }
+    .ref-list a:hover { text-decoration: underline; }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border); padding: 2rem 3rem;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    footer p { font-family: 'Space Mono', monospace; font-size: 0.68rem; color: var(--muted); }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-label { display: none; }
+      .hero { padding: 7rem 1.5rem 3.5rem; }
+      .section { padding: 3rem 1.5rem; }
+      .stats-bar { grid-template-columns: repeat(2, 1fr); }
+      .stat-item { padding: 1.25rem 1rem; }
+      .stats-bar .stat-item:last-child { grid-column: span 2; }
+      footer { flex-direction: column; gap: 1rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="index.html" class="nav-back">← Portfolio</a>
+    <span class="nav-label">Lab Report · Data Centre Design</span>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-grid"></div>
+    <div class="hero-glow"></div>
+    <div class="hero-content">
+      <span class="report-tag">Academic Lab Report · NUST · Faculty of Computing &amp; Informatics</span>
+      <h1 class="hero-title">
+        Tier-1 Data Centre
+        <span>Design Project</span>
+      </h1>
+      <div class="hero-meta">
+        <div class="meta-item">STUDENT<strong>Likubangwa Jay-Z Nyeliso</strong></div>
+        <div class="meta-item">STUDENT NUMBER<strong>223082317</strong></div>
+        <div class="meta-item">INSTITUTION<strong>NUST</strong></div>
+        <div class="meta-item">COMPLIANCE<strong>Tier-1</strong></div>
+        <div class="meta-item">SITE<strong>Windhoek, Namibia (1,654 m ASL)</strong></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STATS BAR -->
+  <div class="stats-bar">
+    <div class="stat-item">
+      <div class="stat-value">6</div>
+      <div class="stat-label">42U Racks</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">16 m²</div>
+      <div class="stat-label">Room Footprint</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">40.3 kW</div>
+      <div class="stat-label">Total IT Load</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">75.4 kW</div>
+      <div class="stat-label">UPS Derated Cap.</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">64.6 kW</div>
+      <div class="stat-label">Cooling Capacity</div>
+    </div>
+  </div>
+
+  <!-- 1. EQUIPMENT SELECTION -->
+  <section class="section">
+    <div class="section-num">01 // Equipment Selection</div>
+    <h2 class="section-title">Hardware Specification Table</h2>
+
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Category</th>
+          <th>Model</th>
+          <th>Qty</th>
+          <th>Total U</th>
+          <th>Key Specifications</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Access Switches</td>
+          <td>Cisco Catalyst C9300-48T(-A)</td>
+          <td>22</td>
+          <td>22U</td>
+          <td>48× GigE, Net Advantage, 350W PSU (1,194 BTU/hr)</td>
+        </tr>
+        <tr>
+          <td>Distribution Switches</td>
+          <td>Cisco Nexus 93180YC-FX</td>
+          <td>3</td>
+          <td>3U</td>
+          <td>48× 10/25G SFP+, 3.6 Tb, 1.72×22.5″, 425W (887 BTU/hr)</td>
+        </tr>
+        <tr>
+          <td>Core Chassis</td>
+          <td>Cisco Nexus 9504</td>
+          <td>2</td>
+          <td>14U</td>
+          <td>7U each, 94% eff (Platinum), 2× 3,000W redundant PSUs per chassis</td>
+        </tr>
+        <tr>
+          <td>Core Supervisors</td>
+          <td>N9K-SUP-A+</td>
+          <td>4</td>
+          <td>—</td>
+          <td>4-core / 8-thread CPU, Typ. 69W, Redundant pair per chassis</td>
+        </tr>
+        <tr>
+          <td>Core Line Modules</td>
+          <td>Cisco N9K-X9732C-EX</td>
+          <td>4</td>
+          <td>—</td>
+          <td>32-port 100G, 720W Typ., Portside intake, Hot-swappable</td>
+        </tr>
+        <tr>
+          <td>Core Fabric Modules</td>
+          <td>N9K-C9504-FMG</td>
+          <td>6</td>
+          <td>—</td>
+          <td>1.6 Tb/slot, 504W typ., Internal backplane</td>
+        </tr>
+        <tr>
+          <td>Router</td>
+          <td>Cisco C8300-1N1S-4T2X</td>
+          <td>1</td>
+          <td>1U</td>
+          <td>3.22 lb, 17.2″ D, 80 Plus Gold, 2× 650W AC PSU (1,300W)</td>
+        </tr>
+        <tr>
+          <td>Firewalls</td>
+          <td>Cisco Secure Firewall 3110</td>
+          <td>7</td>
+          <td>7U</td>
+          <td>23 lb, 20″ D, &gt;89% efficiency, 400W AC PSU</td>
+        </tr>
+        <tr>
+          <td>File Servers</td>
+          <td>Supermicro SYS-511RW</td>
+          <td>8</td>
+          <td>8U</td>
+          <td>1U, 4× 3.5″ hot-swap bays, 600W PSUs, 96% efficient</td>
+        </tr>
+        <tr>
+          <td>Other Servers</td>
+          <td>Supermicro SYS-511RML</td>
+          <td>22</td>
+          <td>22U</td>
+          <td>Intel Xeon E-2400, 350W Platinum (93%), 22.8″ depth, 17.6 lbs</td>
+        </tr>
+        <tr>
+          <td>Patch Panels</td>
+          <td>Tripp Lite N252-048-1U</td>
+          <td>23</td>
+          <td>23U</td>
+          <td>48-port Cat6, 110-type, 3.60 lb, 3.31″ D</td>
+        </tr>
+        <tr>
+          <td>Mgmt. Console</td>
+          <td>Dell FPM185</td>
+          <td>1</td>
+          <td>1U</td>
+          <td>18.5″ LED, &lt;20W, Integrated KBD/Touchpad</td>
+        </tr>
+        <tr>
+          <td>Mgmt. Computer</td>
+          <td>Dell OptiPlex Micro 7010</td>
+          <td>2</td>
+          <td>2U</td>
+          <td>2.06 lb, 7.00″ D, 35–65W CPU, 90–130W AC adapter</td>
+        </tr>
+        <tr>
+          <td>UPS System</td>
+          <td>Magnizon MU40KXL × 2</td>
+          <td>2</td>
+          <td>Floor</td>
+          <td>210 lb, 23.6″ D, 96% eff, 40 kVA (PF 1.0), ext. battery cabinet</td>
+        </tr>
+        <tr>
+          <td>Cooling / AC</td>
+          <td>Vertiv Liebert CRV4 CR066</td>
+          <td>1</td>
+          <td>Floor</td>
+          <td>64.6 kW capacity, 360 kg, 2000×600×1100 mm, 380–415V / 3Ph</td>
+        </tr>
+        <tr class="total-row">
+          <td>TOTAL RACK UNITS</td>
+          <td colspan="2"></td>
+          <td>106U</td>
+          <td>Active equipment — accommodated across 6 × 42U racks</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 2. FLOOR SPACE -->
+  <section class="section">
+    <div class="section-num">02 // Floor Space</div>
+    <h2 class="section-title">Room &amp; Rack Calculation</h2>
+
+    <div class="formula-block">
+      <div class="formula-title">Rack Count Derivation</div>
+      106U ÷ 42U per rack = 2.52 racks minimum for active equipment<br/>
+      + 2 racks &nbsp;→ vertical cable management, patching distribution, airflow separation<br/>
+      + 1 rack &nbsp;&nbsp;→ reserved for future expansion<br/>
+      ──────────────────────────────────────<br/>
+      <strong style="color:var(--accent);">Total: 6 × 42U racks</strong>
+    </div>
+
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Component</th>
+          <th>Calculation</th>
+          <th style="text-align:right;">Area (m²)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>6 × Equipment Racks (0.6 m × 1.0 m each)</td>
+          <td>6 × 0.6 m²</td>
+          <td style="text-align:right;">3.600</td>
+        </tr>
+        <tr>
+          <td>In-row Cooling Unit</td>
+          <td>Fixed footprint</td>
+          <td style="text-align:right;">0.660</td>
+        </tr>
+        <tr>
+          <td>2 × UPS Units (0.360 m × 0.850 m each)</td>
+          <td>2 × 0.306 m²</td>
+          <td style="text-align:right;">0.612</td>
+        </tr>
+        <tr>
+          <td>2 × Battery Cabinets (0.400 m × 0.600 m each)</td>
+          <td>2 × 0.240 m²</td>
+          <td style="text-align:right;">0.480</td>
+        </tr>
+        <tr style="font-weight:600;">
+          <td>Equipment Footprint Subtotal</td>
+          <td></td>
+          <td style="text-align:right;">5.352</td>
+        </tr>
+        <tr>
+          <td>Front &amp; rear service aisle (1.2 m each)</td>
+          <td>2 × 5.352 m²</td>
+          <td style="text-align:right;">10.704</td>
+        </tr>
+        <tr class="total-row">
+          <td>TOTAL FLOOR SPACE</td>
+          <td></td>
+          <td style="text-align:right;">16.056 m²</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p style="font-size:0.83rem;color:var(--muted);line-height:1.7;">
+      Clearances applied: 0.6 m from walls, 1.0 m outward door swing, no windows.
+      Floor-standing UPS units positioned adjacent to external battery cabinets.
+      1:1 patch panel ratio applied — each switch port paired with a corresponding patch panel port.
+    </p>
+  </section>
+
+  <!-- 3. POWER CALCULATIONS -->
+  <section class="section">
+    <div class="section-num">03 // Power</div>
+    <h2 class="section-title">Total Power Calculations</h2>
+
+    <p style="color:var(--muted);font-size:0.87rem;line-height:1.7;margin-bottom:2rem;">
+      The Nexus 9504 core chassis power is derived from PSU output capacity rather than typical component figures.
+      Each chassis is equipped with 2× 3,000W redundant PSUs (6,000W max output per chassis).
+      Input power = 6,000 ÷ 0.94 = 6,382.9W per chassis. Two chassis total = 12,765.9W.
+    </p>
+
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Equipment</th>
+          <th>Qty</th>
+          <th>Output Max (W)</th>
+          <th>Efficiency</th>
+          <th>Input/Unit (W)</th>
+          <th>Total Input (W)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Cisco C9300-48T(-A) Access Switches</td>
+          <td>22</td>
+          <td>350</td>
+          <td>94% Platinum</td>
+          <td>372.3</td>
+          <td>8,190.6</td>
+        </tr>
+        <tr>
+          <td>Cisco Nexus 93180YC-FX Dist. Switches</td>
+          <td>3</td>
+          <td>425</td>
+          <td>94% Platinum</td>
+          <td>452.1</td>
+          <td>1,356.3</td>
+        </tr>
+        <tr>
+          <td>Cisco Nexus 9504 Core Chassis</td>
+          <td>2</td>
+          <td>6,000*</td>
+          <td>94% Platinum</td>
+          <td>6,383.0</td>
+          <td>12,766.0</td>
+        </tr>
+        <tr>
+          <td>Cisco Secure Firewall 3110</td>
+          <td>7</td>
+          <td>400</td>
+          <td>89%</td>
+          <td>449.4</td>
+          <td>3,146.0</td>
+        </tr>
+        <tr>
+          <td>Cisco C8300-1N1S-4T2X Router</td>
+          <td>1</td>
+          <td>1,300</td>
+          <td>92% Gold</td>
+          <td>1,413.0</td>
+          <td>1,413.0</td>
+        </tr>
+        <tr>
+          <td>Supermicro SYS-511RW File Servers</td>
+          <td>8</td>
+          <td>600</td>
+          <td>96%</td>
+          <td>625.0</td>
+          <td>5,000.0</td>
+        </tr>
+        <tr>
+          <td>Supermicro SYS-511RML Other Servers</td>
+          <td>22</td>
+          <td>350</td>
+          <td>93% Platinum</td>
+          <td>376.3</td>
+          <td>8,278.6</td>
+        </tr>
+        <tr>
+          <td>Dell OptiPlex Micro 7010 (Mgmt.)</td>
+          <td>2</td>
+          <td>65</td>
+          <td>90% (assumed)</td>
+          <td>72.2</td>
+          <td>144.4</td>
+        </tr>
+        <tr>
+          <td>Dell FPM185 Console</td>
+          <td>1</td>
+          <td>20</td>
+          <td>90% (assumed)</td>
+          <td>22.2</td>
+          <td>22.2</td>
+        </tr>
+        <tr class="total-row">
+          <td>TOTAL IT LOAD (Real Power)</td>
+          <td colspan="4"></td>
+          <td>40,317.1 W</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p style="font-size:0.75rem;color:var(--muted);margin-bottom:2rem;">
+      * Nexus 9504 power derived from 2× 3,000W redundant PSU output capacity (not typical component figures).
+    </p>
+
+    <div class="calc-grid">
+      <div class="calc-card">
+        <div class="calc-label">Total IT Load (Real Power)</div>
+        <div class="calc-value">40.3 kW</div>
+        <div class="calc-note">Total power drawn from UPS. Includes efficiency losses from all IT and management power supplies.</div>
+      </div>
+      <div class="calc-card">
+        <div class="calc-label">Apparent Power Required</div>
+        <div class="calc-value">42.4 kVA</div>
+        <div class="calc-note">40,317.1 W ÷ 0.95 (power factor) = 42,439.1 VA. Corrected for 0.95 load power factor.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. UPS -->
+  <section class="section">
+    <div class="section-num">04 // UPS System</div>
+    <h2 class="section-title">UPS Selection &amp; Altitude Derating</h2>
+
+    <div class="specs-grid">
+      <div class="spec-row"><span class="spec-key">MODEL</span><span class="spec-val">Magnizon MU40KXL × 2 (Parallel)</span></div>
+      <div class="spec-row"><span class="spec-key">CAPACITY (EACH)</span><span class="spec-val">40 kW / 40 kVA (PF 1.0)</span></div>
+      <div class="spec-row"><span class="spec-key">COMBINED RAW</span><span class="spec-val">80 kW / 80 kVA</span></div>
+      <div class="spec-row"><span class="spec-key">EFFICIENCY</span><span class="spec-val">96% (Online Mode)</span></div>
+      <div class="spec-row"><span class="spec-key">DIMENSIONS (EACH)</span><span class="spec-val">360 × 850 × 885 mm, 95 kg</span></div>
+      <div class="spec-row"><span class="spec-key">TRANSFER MODE</span><span class="spec-val">Online — Zero transfer delay</span></div>
+    </div>
+
+    <div class="formula-block">
+      <div class="formula-title">Altitude Derating — Windhoek, Namibia (1,654 m ASL)</div>
+      Rule: 1% capacity derating per 100 m above 1,000 m<br/><br/>
+      Derating % &nbsp;= (1,654 − 1,000) ÷ 100 × 1% = <strong style="color:var(--accent);">6.54%</strong><br/>
+      Per unit cap. = 40.3 kW × (1 − 0.0654) = <strong style="color:var(--accent);">37.7 kW</strong><br/>
+      Two units &nbsp;&nbsp;&nbsp;= 37.7 × 2 = <strong style="color:var(--accent);">75.4 kW</strong> — covers 40.3 kW IT load ✓
+    </div>
+
+    <div class="formula-block green">
+      <div class="formula-title">UPS Heat Loss Calculation</div>
+      Grid input power &nbsp;= 40,317.1 W ÷ 0.96 = 41,996.9 W<br/>
+      UPS heat released = 41,996.9 − 40,317.1 = <strong style="color:var(--green);">1,679.8 W</strong><br/><br/>
+      Waste heat factor: (1 − 0.96) ÷ 0.96 = 0.04167 → 4.167% of IT load<br/>
+      Verification: 40,317.1 × 0.04167 = 1,679.8 W ✓<br/><br/>
+      <em style="color:var(--muted);">Tier-1 compliance note: AC runs on utility/generator — UPS covers IT &amp; management only.</em>
+    </div>
+
+    <div class="calc-grid">
+      <div class="calc-card">
+        <div class="calc-label">Derated UPS Capacity (Two Units)</div>
+        <div class="calc-value">75.4 kW</div>
+        <div class="calc-note">After 6.54% altitude derating at 1,654 m ASL. Headroom: 35.1 kW (87%) above the 40.3 kW IT load.</div>
+      </div>
+      <div class="calc-card green">
+        <div class="calc-label">UPS Waste Heat to Room</div>
+        <div class="calc-value">1,679.8 W</div>
+        <div class="calc-note">4.167% of IT output load dissipated as heat inside the room. Factored into the total cooling load.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. COOLING -->
+  <section class="section">
+    <div class="section-num">05 // Cooling</div>
+    <h2 class="section-title">Air Conditioning System</h2>
+
+    <div class="specs-grid">
+      <div class="spec-row"><span class="spec-key">MODEL</span><span class="spec-val">Vertiv™ Liebert® CRV4 (CR066)</span></div>
+      <div class="spec-row"><span class="spec-key">TYPE</span><span class="spec-val">In-Row Precision Cooling (Air-Cooled)</span></div>
+      <div class="spec-row"><span class="spec-key">TOTAL CAPACITY</span><span class="spec-val">64.6 kW @ 37°C return / 45°C condensing</span></div>
+      <div class="spec-row"><span class="spec-key">DIMENSIONS</span><span class="spec-val">2000 mm (H) × 600 mm (W) × 1100 mm (D)</span></div>
+      <div class="spec-row"><span class="spec-key">REHEAT</span><span class="spec-val">6 kW</span></div>
+      <div class="spec-row"><span class="spec-key">HUMIDIFIER</span><span class="spec-val">1.5 kg/h</span></div>
+    </div>
+
+    <h3 style="font-family:'Space Mono',monospace;font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);margin:2rem 0 1rem;">Total Heat Removal Breakdown</h3>
+
+    <div class="heat-bar">
+      <div class="heat-bar-label">
+        <span>IT Equipment Heat</span>
+        <span style="color:var(--text);">40,317.1 W — 83.3%</span>
+      </div>
+      <div class="heat-bar-track">
+        <div class="heat-bar-fill" style="width:83.3%;background:var(--accent);"></div>
+      </div>
+    </div>
+    <div class="heat-bar">
+      <div class="heat-bar-label">
+        <span>UPS Waste Heat (96% eff.)</span>
+        <span style="color:var(--text);">1,679.8 W — 3.5%</span>
+      </div>
+      <div class="heat-bar-track">
+        <div class="heat-bar-fill" style="width:3.5%;background:var(--accent2);"></div>
+      </div>
+    </div>
+    <div class="heat-bar">
+      <div class="heat-bar-label">
+        <span>Building Heat Gain (400 W/m² × 16.056 m², no windows)</span>
+        <span style="color:var(--text);">6,422.4 W — 13.3%</span>
+      </div>
+      <div class="heat-bar-track">
+        <div class="heat-bar-fill" style="width:13.3%;background:var(--yellow);"></div>
+      </div>
+    </div>
+
+    <div class="formula-block" style="margin-top:2rem;">
+      <div class="formula-title">Total Heat Load Calculation</div>
+      Step 1 — IT Equipment heat &nbsp;: 40,317.1 W<br/>
+      Step 2 — UPS waste heat &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: + 1,679.8 W &nbsp;(4.167% of IT load)<br/>
+      Step 3 — Building heat gain &nbsp;: + 6,422.4 W &nbsp;(400 W/m² × 16.056 m²)<br/>
+      ──────────────────────────────────────<br/>
+      <strong style="color:var(--accent);">Total Heat Load = 48,419.3 W (48.4 kW)</strong>
+    </div>
+
+    <div class="calc-grid">
+      <div class="calc-card">
+        <div class="calc-label">Total Room Heat Load</div>
+        <div class="calc-value">48.4 kW</div>
+        <div class="calc-note">IT equipment + UPS efficiency loss + building environmental gain (warm Windhoek ambient, no windows).</div>
+      </div>
+      <div class="calc-card green">
+        <div class="calc-label">Cooling Headroom</div>
+        <div class="calc-value">16.2 kW</div>
+        <div class="calc-note">64.6 kW capacity − 48.4 kW load = 25.1% margin. Sufficient for peak conditions and incremental load growth.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. CONCLUSION -->
+  <section class="section">
+    <div class="section-num">06 // Conclusion</div>
+    <h2 class="section-title">Design Summary</h2>
+
+    <div class="conclusion-box">
+      <p>
+        This design specifies a <strong>Tier-1 compliant data centre</strong> housing all required equipment
+        across 6 standard 42U racks within a 16.056 m² room. The layout accounts for active equipment,
+        structured cabling with a 1:1 patch panel ratio, vertical cable management, horizontal patching
+        distribution, rear-access airflow separation, and a dedicated expansion bay.
+      </p>
+      <p>
+        Two <strong>Magnizon MU40KXL</strong> UPS units operating in parallel provide 75.4 kW of
+        altitude-derated capacity — derated 6.54% for Windhoek's elevation of 1,654 m ASL — comfortably
+        covering the 40.3 kW IT load with 87% headroom. Online mode operation ensures zero transfer delay on
+        any utility power failure.
+      </p>
+      <p>
+        The <strong>Vertiv Liebert CRV4 (CR066)</strong> in-row precision cooling unit handles the full
+        48.4 kW total heat load (IT equipment + 1,679.8 W UPS waste heat + 6,422.4 W building gain
+        at 400 W/m²), with 16.2 kW (25.1%) of capacity headroom for peak load and future expansion.
+      </p>
+    </div>
+  </section>
+
+  <!-- 7. REFERENCES -->
+  <section class="section">
+    <div class="section-num">07 // References</div>
+    <h2 class="section-title">Datasheets &amp; Sources</h2>
+
+    <ol class="ref-list">
+      <li data-ref="[1]">Cisco Systems, Inc., "Cisco Catalyst 9300 Series Switches Data Sheet," May 2025. [Online]. Available: <a href="https://www.cisco.com/c/en/us/products/collateral/switches/catalyst-9300-series-switches/nb-06-cat9300-ser-data-sheet-cte-en.pdf" target="_blank">cisco.com ↗</a> (visited June 05, 2026).</li>
+      <li data-ref="[2]">Cisco Systems, Inc., "Cisco Nexus 93180YC-FX Data Sheet," May 2025. [Online]. Available: <a href="https://www.cisco.com/c/en/us/products/collateral/switches/nexus-9000-series-switches/datasheet-c78-742284.pdf" target="_blank">cisco.com ↗</a> (visited June 05, 2026).</li>
+      <li data-ref="[3]">Cisco Systems, Inc., "Cisco Nexus 9500 Series Switches Data Sheet," May 2025. [Online]. Available: <a href="https://www.cisco.com/c/en/us/products/collateral/switches/nexus-9000-series-switches/datasheet-c78-729404.pdf" target="_blank">cisco.com ↗</a> (visited June 05, 2026).</li>
+      <li data-ref="[4]">Cisco Systems, Inc., "Cisco Nexus 9500 Cloud Scale Line Cards and Fabric Modules Data Sheet," 2024. [Online]. Available: <a href="https://www.cisco.com/c/en/us/products/collateral/switches/nexus-9000-series-switches/datasheet-c78-736677.pdf" target="_blank">cisco.com ↗</a> (visited June 05, 2026).</li>
+      <li data-ref="[5]">Cisco Systems, Inc., "Cisco Catalyst 8300 Series Edge Platforms Data Sheet," May 2025. [Online]. Available: <a href="https://www.cisco.com/c/en/us/products/collateral/routers/catalyst-8300-series-edge-platforms/datasheet-c78-744088.pdf" target="_blank">cisco.com ↗</a> (visited June 05, 2026).</li>
+      <li data-ref="[6]">Cisco Systems, Inc., "Cisco Secure Firewall 3100 Series Data Sheet," Sept 2025. [Online]. Available: <a href="https://www.cisco.com/c/en/us/products/collateral/security/firewalls/secure-firewall-3100-series-ds.pdf" target="_blank">cisco.com ↗</a> (visited June 05, 2026).</li>
+      <li data-ref="[7]">Super Micro Computer, Inc., "SYS-511R-W: 1U WIO SuperServer Datasheet," 2026. [Online]. Available: <a href="https://www.supermicro.com/en/products/system/datasheet/sys-511r-w" target="_blank">supermicro.com ↗</a> (visited June 05, 2026).</li>
+      <li data-ref="[8]">Super Micro Computer, Inc., "SYS-511R-ML: Mini-1U SuperServer Datasheet," 2026. [Online]. Available: <a href="https://www.supermicro.com/en/products/system/datasheet/sys-511rml" target="_blank">supermicro.com ↗</a> (visited June 05, 2026).</li>
+      <li data-ref="[9]">Eaton Tripp Lite, "48-Port 1U Rack-Mount Cat6/Cat5 High Density 110 Patch Panel (N252-048-1U)," 2026. [Online]. Available: <a href="https://assets.tripplite.com/productpdfs/en/n2520481u.pdf" target="_blank">tripplite.com ↗</a> (visited June 05, 2026).</li>
+      <li data-ref="[10]">Dell Inc., "1U Rackmount LED Console (FPM185) Specifications," Feb 2013. [Online]. Available: <a href="https://i.dell.com/sites/content/shared-content/datasheets/en/Documents/dell-kmm-rack-console-spec-en.pdf" target="_blank">dell.com ↗</a> (visited June 05, 2026).</li>
+      <li data-ref="[11]">Dell Technologies, "OptiPlex Micro Technical Specifications," 2023. [Online]. Available: <a href="https://www.delltechnologies.com/asset/en-us/products/desktops-and-all-in-ones/technical-support/optiplex-micro-spec-sheet.pdf" target="_blank">dell.com ↗</a> (visited June 05, 2026).</li>
+      <li data-ref="[12]">Magnizon, "MU40KXL 40KVA/40KW High Frequency Online UPS Datasheet," n.d. [Online]. Available: <a href="https://magnizon.com/images/product_brochures/1756367461.pdf" target="_blank">magnizon.com ↗</a> (visited June 05, 2026).</li>
+      <li data-ref="[13]">Vertiv Group Corp., "Vertiv™ Liebert® CRV4 In-Row Cooling Brochure," n.d. [Online]. Available: <a href="https://www.vertiv.com/493e99/globalassets/products/thermal-management/in-row-cooling/liebert-crv4-brochure.pdf" target="_blank">vertiv.com ↗</a> (visited June 05, 2026).</li>
+    </ol>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2026 Likubangwa Jay-Z Nyeliso · Student No. 223082317 · NUST</p>
+    <p><a href="index.html" style="color:var(--accent);text-decoration:none;">← Back to Portfolio</a></p>
+  </footer>
+
+</body>
+</html>
