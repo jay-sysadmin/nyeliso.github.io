@@ -664,6 +664,12 @@
     .g-pass        { color: var(--muted); }
     .g-fail        { color: #ef4444; }
     .g-na          { color: var(--muted); font-style: italic; }
+    .g-exemption   { color: var(--muted); font-style: italic; letter-spacing: 0.05em; }
+    .transcript-block {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.55rem; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--accent2); margin: 1rem 0 0.4rem 0.1rem;
+    }
   </style>
 </head>
 <body>
@@ -961,64 +967,88 @@
           <div class="exp-role">BSc Computer Science (NQF Level 7)</div>
           <div class="exp-company" style="color: var(--green);">Namibia University of Science and Technology (NUST)</div>
           <ul class="exp-points" style="margin-bottom: 2rem;">
-            <li>Distinction in IT Infrastructure Administration &amp; Services, Systems Virtualisation, and Applied Statistics &amp; Probability</li>
-            <li>Distinction in Linux Systems Administration, Wireless Technologies, and Innovation &amp; Entrepreneurship</li>
-            <li>Coursework in Advanced Network Security, Data Centre Infrastructure Management, and Database Administration</li>
+            <li>Distinction in IT Infrastructure Administration &amp; Services (83), Systems Virtualisation (76), Applied Statistics &amp; Probability (76), and Wireless Technologies (75)</li>
+            <li>Credit in Innovation &amp; Entrepreneurship (69), Database Administration (66), and Data Networks (63)</li>
+            <li>Coursework in Advanced Network Security, Data Centre Infrastructure Management, Operating Systems, and Information Systems Security Essentials</li>
           </ul>
 
           <!-- FULL TRANSCRIPT -->
           <div style="font-family:'Space Mono',monospace;font-size:0.6rem;letter-spacing:0.18em;color:var(--muted);text-transform:uppercase;margin-bottom:1rem;">Full Academic Transcript</div>
 
-          <div class="transcript-year">2023</div>
-          <table class="transcript-table">
-            <tbody>
-              <tr><td>Introduction to Computing</td><td class="g-pass">54 · PASS</td></tr>
-              <tr><td>Business Management Information Systems</td><td class="g-credit">68 · CREDIT</td></tr>
-              <tr><td>Basic Science</td><td class="g-credit">60 · CREDIT</td></tr>
-              <tr><td>Database Fundamentals</td><td class="g-credit">60 · CREDIT</td></tr>
-              <tr><td>Design Thinking</td><td class="g-credit">68 · CREDIT</td></tr>
-              <tr><td>Mathematics for Computing &amp; Informatics 1A</td><td class="g-pass">50 · PASS</td></tr>
-              <tr><td>Principles of English Language Use</td><td class="g-pass">57 · PASS</td></tr>
-              <tr><td>Computer Organisation and Architecture</td><td class="g-merit">72 · MERIT</td></tr>
-              <tr><td>Data Structures and Algorithm 1</td><td class="g-pass">57 · PASS</td></tr>
-              <tr><td>Mathematics for Computing &amp; Informatics 1B</td><td class="g-pass">50 · PASS</td></tr>
-              <tr><td>Programming 1</td><td class="g-credit">67 · CREDIT</td></tr>
-              <tr><td>Systems Administration</td><td class="g-pass">55 · PASS</td></tr>
-              <tr><td>Operating Systems</td><td class="g-merit">74 · MERIT</td></tr>
-              <tr><td>Information Systems</td><td class="g-merit">72 · MERIT</td></tr>
-              <tr><td>Programming 2</td><td class="g-credit">69 · CREDIT</td></tr>
-            </tbody>
-          </table>
+          <!-- 2023 -->
+          <div class="transcript-year">2023 <span style="color:var(--muted);font-weight:400;font-size:0.55rem;letter-spacing:0.08em;">· PH PASS FIRST YEAR</span></div>
 
-          <div class="transcript-year">2024</div>
-          <table class="transcript-table">
-            <tbody>
-              <tr><td>Applied Statistics &amp; Probability</td><td class="g-distinction">76 · DISTINCTION</td></tr>
-              <tr><td>Data Networks</td><td class="g-credit">63 · CREDIT</td></tr>
-              <tr><td>English in Practice</td><td class="g-fail">48 · FAIL</td></tr>
-              <tr><td>English in Practice (Jun/Aug)</td><td class="g-fail">45 · FAIL</td></tr>
-            </tbody>
-          </table>
+          <div class="transcript-block">JUN/AUG EXAMINATIONS</div>
+          <table class="transcript-table"><tbody>
+            <tr><td>Introduction to Computing</td><td class="g-pass">54 · PASS (SUPP.)</td></tr>
+          </tbody></table>
 
-          <div class="transcript-year">2025</div>
-          <table class="transcript-table">
-            <tbody>
-              <tr><td>IT Infrastructure Administration &amp; Services</td><td class="g-distinction">83 · DISTINCTION</td></tr>
-              <tr><td>Systems Virtualisation</td><td class="g-distinction">76 · DISTINCTION</td></tr>
-              <tr><td>Innovation, Creativity &amp; Entrepreneurship</td><td class="g-distinction">75 · DISTINCTION</td></tr>
-              <tr><td>Linux Systems Administration</td><td class="g-distinction">75 · DISTINCTION</td></tr>
-              <tr><td>Wireless Technologies</td><td class="g-distinction">75 · DISTINCTION</td></tr>
-              <tr><td>High Performance Computing</td><td class="g-credit">69 · CREDIT</td></tr>
-              <tr><td>Ethics for Computing</td><td class="g-credit">69 · CREDIT</td></tr>
-              <tr><td>Database Administration</td><td class="g-credit">66 · CREDIT</td></tr>
-              <tr><td>English in Practice</td><td class="g-pass">58 · PASS</td></tr>
-              <tr><td>English for Academic Purposes</td><td class="g-pass">57 · PASS</td></tr>
-              <tr><td>Communication Networks</td><td class="g-pass">50 · PASS</td></tr>
-              <tr><td>Advanced Network Security</td><td class="g-pass">51 · PASS</td></tr>
-              <tr><td>Data Centre Infrastructure Management</td><td class="g-fail">44 · FAIL</td></tr>
-              <tr><td>Core Networks Engineering</td><td class="g-na">—</td></tr>
-            </tbody>
-          </table>
+          <div class="transcript-block">SEMESTER 1</div>
+          <table class="transcript-table"><tbody>
+            <tr><td>Business Management Information Systems</td><td class="g-credit">68 · CREDIT</td></tr>
+            <tr><td>Basic Science</td><td class="g-exemption">EXEMPTION</td></tr>
+            <tr><td>Database Fundamentals</td><td class="g-credit">60 · CREDIT</td></tr>
+            <tr><td>Design Thinking</td><td class="g-credit">68 · CREDIT</td></tr>
+            <tr><td>Introduction to Computing</td><td class="g-fail">47 · FAIL</td></tr>
+            <tr><td>Mathematics for Computing &amp; Informatics 1A</td><td class="g-pass">50 · PASS</td></tr>
+            <tr><td>Principles of English Language Use</td><td class="g-exemption">EXEMPTION</td></tr>
+          </tbody></table>
+
+          <div class="transcript-block">SEMESTER 2</div>
+          <table class="transcript-table"><tbody>
+            <tr><td>Computer Organisation and Architecture</td><td class="g-merit">72 · MERIT</td></tr>
+            <tr><td>Data Structures and Algorithm 1</td><td class="g-pass">57 · PASS</td></tr>
+            <tr><td>Mathematics for Computing &amp; Informatics 1B</td><td class="g-pass">50 · PASS</td></tr>
+            <tr><td>Programming 1</td><td class="g-credit">67 · CREDIT</td></tr>
+            <tr><td>Systems Administration</td><td class="g-pass">55 · PASS</td></tr>
+          </tbody></table>
+
+          <!-- 2024 -->
+          <div class="transcript-year" style="margin-top:1.75rem;">2024 <span style="color:var(--muted);font-weight:400;font-size:0.55rem;letter-spacing:0.08em;">· PJ PASS SECOND YEAR</span></div>
+
+          <div class="transcript-block">JUN/AUG EXAMINATIONS</div>
+          <table class="transcript-table"><tbody>
+            <tr><td>English in Practice</td><td class="g-fail">45 · FAIL (SUPP.)</td></tr>
+          </tbody></table>
+
+          <div class="transcript-block">SEMESTER 1</div>
+          <table class="transcript-table"><tbody>
+            <tr><td>Applied Stats &amp; Probability</td><td class="g-distinction">76 · DISTINCTION</td></tr>
+            <tr><td>Data Networks</td><td class="g-credit">63 · CREDIT</td></tr>
+            <tr><td>English in Practice</td><td class="g-fail">48 · FAIL</td></tr>
+          </tbody></table>
+
+          <div class="transcript-block">SEMESTER 2</div>
+          <table class="transcript-table"><tbody>
+            <tr><td>Information Systems Security Essentials</td><td class="g-merit">72 · MERIT</td></tr>
+            <tr><td>Operating Systems</td><td class="g-merit">74 · MERIT</td></tr>
+            <tr><td>Programming 2</td><td class="g-credit">69 · CREDIT</td></tr>
+            <tr><td>Innovation, Creativity &amp; Entrepreneurship</td><td class="g-credit">69 · CREDIT</td></tr>
+            <tr><td>Wireless Technologies</td><td class="g-distinction">75 · DISTINCTION</td></tr>
+            <tr><td>Ethics for Computing</td><td class="g-pass">57 · PASS</td></tr>
+            <tr><td>Linux Systems Administration</td><td class="g-pass">58 · PASS</td></tr>
+            <tr><td>Communication Networks</td><td class="g-fail">45 · FAIL</td></tr>
+            <tr><td>Core Networks Engineering</td><td class="g-na">—</td></tr>
+          </tbody></table>
+
+          <div class="transcript-block">DEC/FEB EXAMINATIONS</div>
+          <table class="transcript-table"><tbody>
+            <tr><td>Communication Networks</td><td class="g-pass">50 · PASS (SUPP.)</td></tr>
+          </tbody></table>
+
+          <!-- 2025 -->
+          <div class="transcript-year" style="margin-top:1.75rem;">2025</div>
+
+          <div class="transcript-block">SEMESTER 1</div>
+          <table class="transcript-table"><tbody>
+            <tr><td>IT Infrastructure Administration &amp; Services</td><td class="g-distinction">83 · DISTINCTION</td></tr>
+            <tr><td>Systems Virtualisation</td><td class="g-distinction">76 · DISTINCTION</td></tr>
+            <tr><td>High Performance Computing</td><td class="g-credit">69 · CREDIT</td></tr>
+            <tr><td>Database Administration</td><td class="g-credit">66 · CREDIT</td></tr>
+            <tr><td>English for Academic Purposes</td><td class="g-pass">57 · PASS</td></tr>
+            <tr><td>Advanced Network Security</td><td class="g-pass">51 · PASS</td></tr>
+            <tr><td>Data Centre Infrastructure Management</td><td class="g-fail">44 · FAIL</td></tr>
+          </tbody></table>
         </div>
       </div>
 
