@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Active Directory Lab — Portfolio</title>
+<title>Active Directory Administration Lab — Portfolio</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;500&family=Lora:ital,wght@0,400;0,500;1,400&display=swap');
 
@@ -360,10 +360,10 @@ h2 {
     <div class="doc-header">
       <div class="doc-meta">
         <span class="doc-tag">SAD622S · System Administration</span>
-        <span class="doc-date">Lab completed: 3 June 2026</span>
+        <span class="doc-date">Initial setup: 3 Jun 2026 · Extended: 18 Jun 2026</span>
       </div>
-      <div class="doc-title">Active Directory<br>Domain Setup Lab</div>
-      <div class="doc-subtitle">Practical lab — configuring AD DS, domain users, OUs, and security groups on Windows Server</div>
+      <div class="doc-title">Active Directory<br>Administration Lab</div>
+      <div class="doc-subtitle">Practical lab — AD DS, OU structure, security groups, delegated admin, file permissions, Group Policy, and computer/login troubleshooting on Windows Server</div>
       <div class="stamp">✓ Completed</div>
     </div>
 
@@ -371,7 +371,7 @@ h2 {
     <div class="section-label">Lab Objective</div>
     <div class="objective-box">
       <strong>Task Summary</strong>
-      Set up a Windows Server 2019 domain environment (<strong>jay.local</strong>), promote the server to a Domain Controller, and configure Active Directory by creating Organisational Units, user accounts, and security groups — then add a full-time employee (Martin / JoE) to the Finance department group with correct folder access.
+      Built out a full Active Directory environment on Windows Server 2019 (<strong>jay.local</strong>): delegated admin accounts, an OU structure (Admins, Accounts, IT, HR, IT_DEPARTMENT), and seven departmental security groups (Accounting, Sales, IT, Marketing, HR, Executive, Finance). Used the environment to practise day-to-day AD administration — user lifecycle and department transfers, password/lockout support, Share &amp; NTFS permissions, delegated least-privilege admin, Group Policy restrictions, and troubleshooting a computer trust-relationship issue across two domain-joined machines.
     </div>
 
     <!-- Tasks completed -->
@@ -379,12 +379,19 @@ h2 {
     <div class="task-grid">
       <div class="task-item"><span class="task-check">✓</span><span class="task-num">01</span>Installed AD DS role via Server Manager</div>
       <div class="task-item"><span class="task-check">✓</span><span class="task-num">02</span>Promoted server to Domain Controller (jay.local)</div>
-      <div class="task-item"><span class="task-check">✓</span><span class="task-num">03</span>Created Organisational Units (Accounts, Groups)</div>
-      <div class="task-item"><span class="task-check">✓</span><span class="task-num">04</span>Created user accounts with naming conventions</div>
-      <div class="task-item"><span class="task-check">✓</span><span class="task-num">05</span>Created Security Groups: Finance, HR, IT, Marketing</div>
-      <div class="task-item"><span class="task-check">✓</span><span class="task-num">06</span>Added user JoE Martin to Finance group</div>
-      <div class="task-item"><span class="task-check">✓</span><span class="task-num">07</span>Joined a client computer to the domain</div>
-      <div class="task-item"><span class="task-check">✓</span><span class="task-num">08</span>Signed in to domain from client using domain user</div>
+      <div class="task-item"><span class="task-check">✓</span><span class="task-num">03</span>Built OU structure: Admins, Accounts, IT, HR, IT_DEPARTMENT, Groups</div>
+      <div class="task-item"><span class="task-check">✓</span><span class="task-num">04</span>Created and edited user accounts; practised enable/disable</div>
+      <div class="task-item"><span class="task-check">✓</span><span class="task-num">05</span>Created 7 departmental security groups</div>
+      <div class="task-item"><span class="task-check">✓</span><span class="task-num">06</span>Added and removed users from security groups</div>
+      <div class="task-item"><span class="task-check">✓</span><span class="task-num">07</span>Transferred a user from HR to IT, updated group membership</div>
+      <div class="task-item"><span class="task-check">✓</span><span class="task-num">08</span>Reset a password and forced change at next logon</div>
+      <div class="task-item"><span class="task-check">✓</span><span class="task-num">09</span>Reviewed account lockout &amp; login-failure scenarios</div>
+      <div class="task-item"><span class="task-check">✓</span><span class="task-num">10</span>Set up shared folder with Share &amp; NTFS permissions</div>
+      <div class="task-item"><span class="task-check">✓</span><span class="task-num">11</span>Delegated OU control to two admin accounts</div>
+      <div class="task-item"><span class="task-check">✓</span><span class="task-num">12</span>Joined 2 computers to the domain</div>
+      <div class="task-item"><span class="task-check">✓</span><span class="task-num">13</span>Investigated a computer trust-relationship failure</div>
+      <div class="task-item"><span class="task-check">✓</span><span class="task-num">14</span>Created and linked a GPO to an OU</div>
+      <div class="task-item"><span class="task-check">✓</span><span class="task-num">15</span>Verified domain &amp; policy state using command-line tools</div>
     </div>
 
     <!-- Step by step -->
@@ -420,8 +427,9 @@ h2 {
       <div class="step">
         <div class="step-num">4</div>
         <div class="step-body">
-          <div class="step-title">Create Organisational Units (OUs)</div>
-          <div class="step-desc">Right-clicked <strong>jay.local</strong> → New → Organisational Unit. Created two OUs: <strong>Accounts</strong> (to hold user accounts) and <strong>Groups</strong> (to hold security groups). OUs are like folders that help organise and apply different policies to different sets of users.</div>
+          <div class="step-title">Build Out the OU Structure</div>
+          <div class="step-desc">Right-clicked <strong>jay.local</strong> → New → Organisational Unit and created the OUs needed to organise the domain: <strong>Admins</strong> (delegated admin accounts), <strong>Accounts</strong> (general user accounts), <strong>IT</strong> and <strong>HR</strong> (departmental staff), <strong>IT_DEPARTMENT</strong> (domain-joined computer accounts), and <strong>Groups</strong> (security groups). Keeping these separate makes it possible to apply different policies and permissions to each.</div>
+          <span class="step-code">New → Organisational Unit → Admins / Accounts / IT / HR / IT_DEPARTMENT / Groups</span>
         </div>
       </div>
 
@@ -429,7 +437,7 @@ h2 {
         <div class="step-num">5</div>
         <div class="step-body">
           <div class="step-title">Create User Accounts</div>
-          <div class="step-desc">Navigated to the <strong>Accounts OU</strong>, right-clicked → New → User. Created a new user following the naming convention (first name + last initial). Set a temporary password and required the user to change it at first login.</div>
+          <div class="step-desc">Navigated to the <strong>Accounts OU</strong>, right-clicked → New → User, and created several user accounts following a consistent naming convention. Set a temporary password for each and required a change at first login.</div>
           <span class="step-code">Example: JoE Martin → username: jmartin</span>
         </div>
       </div>
@@ -437,26 +445,108 @@ h2 {
       <div class="step">
         <div class="step-num">6</div>
         <div class="step-body">
-          <div class="step-title">Create Security Groups</div>
-          <div class="step-desc">Navigated to the <strong>Groups OU</strong>, right-clicked → New → Group. Created four Security Groups: <strong>Finance</strong>, <strong>HR</strong>, <strong>IT</strong>, and <strong>Marketing</strong>. Security groups control which resources (folders, printers, apps) each department can access.</div>
+          <div class="step-title">Edit User Properties & Practise Enable/Disable</div>
+          <div class="step-desc">Opened a user's <em>Properties</em> dialog to edit details on the General and Organization tabs. Practised disabling an account from the <strong>Account</strong> tab — e.g. for a departing employee — then re-enabling it. Disabling blocks logon without deleting the account or its group memberships.</div>
+          <span class="step-code">Right-click user → Properties / Disable Account</span>
         </div>
       </div>
 
       <div class="step">
         <div class="step-num">7</div>
         <div class="step-body">
-          <div class="step-title">Add User to Finance Group</div>
-          <div class="step-desc">Double-clicked the <strong>Finance</strong> group → Members tab → Add. Added <strong>JoE Martin</strong> (from jay.local/Accounts). This gives Martin access to Finance department resources. Verified the membership was saved correctly.</div>
-          <span class="step-code">Finance Properties → Members → Add → JoE Martin</span>
+          <div class="step-title">Create Departmental Security Groups</div>
+          <div class="step-desc">In the <strong>Groups</strong> OU, created seven security groups covering every department: <strong>Accounting, Sales, IT, Marketing, HR, Executive,</strong> and <strong>Finance</strong>. Each group controls access to that department's resources without managing permissions per individual user.</div>
+          <span class="step-code">New → Group → Accounting / Sales / IT / Marketing / HR / Executive / Finance</span>
         </div>
       </div>
 
       <div class="step">
         <div class="step-num">8</div>
         <div class="step-body">
-          <div class="step-title">Join Client Computer to Domain & Test Login</div>
-          <div class="step-desc">On a client Windows machine, navigated to <em>System Properties → Computer Name → Change</em>. Changed from Workgroup to Domain, entered <strong>jay.local</strong>. Provided domain admin credentials. After reboot, signed in using the domain user account to confirm authentication was working.</div>
+          <div class="step-title">Add a User to a Security Group</div>
+          <div class="step-desc">Opened the <strong>Finance</strong> group's Properties → Members tab → Add, and added <strong>JoE Martin</strong>. This grants Martin access to anything permissioned to the Finance group, without touching his account individually.</div>
+          <span class="step-code">Finance Properties → Members → Add → JoE Martin</span>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">9</div>
+        <div class="step-body">
+          <div class="step-title">Remove a User from a Security Group</div>
+          <div class="step-desc">Practised the reverse operation: opened a group's Members tab, selected an existing member, and clicked Remove. Confirmed the user immediately lost the access tied to that group — the standard step when someone changes role or leaves a department.</div>
+          <span class="step-code">Group Properties → Members → select user → Remove</span>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">10</div>
+        <div class="step-body">
+          <div class="step-title">Transfer a User from HR to IT</div>
+          <div class="step-desc">Modelled a department transfer end-to-end: moved a user object from the <strong>HR</strong> OU into the <strong>IT</strong> OU (right-click → Move), then updated group membership — removed from HR, added to IT. The OU move handles policy and location; the group change handles resource access — both are needed for a real transfer.</div>
+          <span class="step-code">Move user: HR OU → IT OU, then update group membership</span>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">11</div>
+        <div class="step-body">
+          <div class="step-title">Reset a Password & Force Change at Next Logon</div>
+          <div class="step-desc">In ADUC, right-clicked a user and selected <em>Reset Password</em> to issue a new temporary password, ticking <strong>User must change password at next logon</strong>. This is the most common helpdesk request, and avoids the admin ever needing to know the user's next password.</div>
+          <span class="step-code">Right-click user → Reset Password → ☑ User must change password at next logon</span>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">12</div>
+        <div class="step-body">
+          <div class="step-title">Review Account Lockouts & Login Failures</div>
+          <div class="step-desc">Worked through the <strong>Account</strong> tab to tell apart a locked-out account (too many failed attempts — fixed by ticking <em>Unlock account</em>) from other login failures, such as an expired password, a disabled account, or logon hours restrictions. Each looks the same to the user but needs a different fix.</div>
+          <span class="step-code">Account tab → Unlock account / Account expires / Logon Hours</span>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">13</div>
+        <div class="step-body">
+          <div class="step-title">Set Up File Sharing with Share & NTFS Permissions</div>
+          <div class="step-desc">Created a shared folder on the server and shared it over the network. Set <strong>Share</strong> permissions at the share level, then set separate <strong>NTFS (Security tab)</strong> permissions on the folder itself, giving the relevant department's security group access while leaving others without it. Confirmed that when Share and NTFS permissions differ, the more restrictive one wins.</div>
+          <span class="step-code">Properties → Sharing (Share) · Properties → Security (NTFS)</span>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">14</div>
+        <div class="step-body">
+          <div class="step-title">Delegate Administrative Control</div>
+          <div class="step-desc">Rather than relying on the built-in Administrator account for everything, created two named admin accounts — <strong>Jay Admin</strong> and <strong>Josh Mark</strong> — in the Admins OU. Used the Delegation of Control Wizard to grant one of them limited rights over a specific OU instead of full Domain Admin rights, in line with least-privilege practice.</div>
+          <span class="step-code">Right-click OU → Delegate Control…</span>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">15</div>
+        <div class="step-body">
+          <div class="step-title">Join Computers to the Domain</div>
+          <div class="step-desc">On two client machines, went to <em>System Properties → Computer Name → Change</em>, switched from Workgroup to Domain, and joined <strong>jay.local</strong> using domain admin credentials. After rebooting, signed in with a domain user account on each to confirm authentication was working.</div>
           <span class="step-code">sysdm.cpl → Computer Name → Change → Domain: jay.local</span>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">16</div>
+        <div class="step-body">
+          <div class="step-title">Investigate a Trust Relationship Failure</div>
+          <div class="step-desc">Looked into the classic <em>"trust relationship between this workstation and the domain has failed"</em> error, which happens when a computer's AD account and its local record of that relationship fall out of sync — e.g. after a rebuild or a reset computer password. Checked basic connectivity first, then confirmed the two standard fixes: reset the computer account in ADUC, or remove and rejoin the domain.</div>
+          <span class="step-code">ping &lt;DC&gt; · nslookup jay.local · ADUC → Reset Account</span>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">17</div>
+        <div class="step-body">
+          <div class="step-title">Create and Link a Group Policy Object</div>
+          <div class="step-desc">In Group Policy Management, created a new GPO and linked it to the <strong>HR</strong> OU. Under <em>User Configuration → Administrative Templates → Control Panel</em>, enabled <strong>Prohibit access to Control Panel and PC settings</strong>, then ran a policy update on a test client and checked the result to confirm it applied to HR users only.</div>
+          <span class="step-code">gpupdate /force · gpresult /r</span>
         </div>
       </div>
 
@@ -466,14 +556,37 @@ h2 {
     <div class="section-label">Domain Structure Created</div>
     <div class="ad-diagram">
       <div class="ad-row"><span class="ad-icon">🌲</span><span class="ad-name">jay.local</span><span class="ad-desc">— Forest root domain</span></div>
-      <div class="ad-row ad-indent1"><span class="ad-icon">📁</span><span class="ad-name">Accounts</span><span class="ad-desc">— OU for user accounts</span></div>
+      <div class="ad-row ad-indent1"><span class="ad-icon">📁</span><span class="ad-name">Admins</span><span class="ad-desc">— OU for delegated admin accounts</span></div>
+      <div class="ad-row ad-indent2"><span class="ad-icon">👤</span><span class="ad-name">Jay Admin</span><span class="ad-desc">— Delegated administrator account</span></div>
+      <div class="ad-row ad-indent2"><span class="ad-icon">👤</span><span class="ad-name">Josh Mark</span><span class="ad-desc">— Delegated administrator account</span></div>
+      <div class="ad-row ad-indent1"><span class="ad-icon">📁</span><span class="ad-name">Accounts</span><span class="ad-desc">— OU for general user accounts</span></div>
       <div class="ad-row ad-indent2"><span class="ad-icon">👤</span><span class="ad-name">JoE Martin</span><span class="ad-desc">— Full-time employee, Finance Dept</span></div>
+      <div class="ad-row ad-indent1"><span class="ad-icon">📁</span><span class="ad-name">IT</span><span class="ad-desc">— OU for IT department staff</span></div>
+      <div class="ad-row ad-indent2"><span class="ad-icon">👤</span><span class="ad-name">Naomi Reed</span><span class="ad-desc">— transferred in from HR</span></div>
+      <div class="ad-row ad-indent1"><span class="ad-icon">📁</span><span class="ad-name">HR</span><span class="ad-desc">— OU for HR department staff</span></div>
+      <div class="ad-row ad-indent1"><span class="ad-icon">📁</span><span class="ad-name">IT_DEPARTMENT</span><span class="ad-desc">— OU for domain-joined computer accounts</span></div>
+      <div class="ad-row ad-indent2"><span class="ad-icon">🖥️</span><span class="ad-name">WORKSTATION-01</span><span class="ad-desc">— domain-joined client</span></div>
+      <div class="ad-row ad-indent2"><span class="ad-icon">🖥️</span><span class="ad-name">WORKSTATION-02</span><span class="ad-desc">— domain-joined client</span></div>
       <div class="ad-row ad-indent1"><span class="ad-icon">📁</span><span class="ad-name">Groups</span><span class="ad-desc">— OU for security groups</span></div>
-      <div class="ad-row ad-indent2"><span class="ad-icon">👥</span><span class="ad-name">Finance</span><span class="ad-desc">— Security Group (members: JoE Martin)</span></div>
-      <div class="ad-row ad-indent2"><span class="ad-icon">👥</span><span class="ad-name">HR</span><span class="ad-desc">— Security Group</span></div>
-      <div class="ad-row ad-indent2"><span class="ad-icon">👥</span><span class="ad-name">IT</span><span class="ad-desc">— Security Group</span></div>
+      <div class="ad-row ad-indent2"><span class="ad-icon">👥</span><span class="ad-name">Accounting</span><span class="ad-desc">— Security Group</span></div>
+      <div class="ad-row ad-indent2"><span class="ad-icon">👥</span><span class="ad-name">Sales</span><span class="ad-desc">— Security Group</span></div>
+      <div class="ad-row ad-indent2"><span class="ad-icon">👥</span><span class="ad-name">IT</span><span class="ad-desc">— Security Group (members: Naomi Reed)</span></div>
       <div class="ad-row ad-indent2"><span class="ad-icon">👥</span><span class="ad-name">Marketing</span><span class="ad-desc">— Security Group</span></div>
+      <div class="ad-row ad-indent2"><span class="ad-icon">👥</span><span class="ad-name">HR</span><span class="ad-desc">— Security Group</span></div>
+      <div class="ad-row ad-indent2"><span class="ad-icon">👥</span><span class="ad-name">Executive</span><span class="ad-desc">— Security Group</span></div>
+      <div class="ad-row ad-indent2"><span class="ad-icon">👥</span><span class="ad-name">Finance</span><span class="ad-desc">— Security Group (members: JoE Martin)</span></div>
       <div class="ad-row ad-indent1"><span class="ad-icon">🖥️</span><span class="ad-name">Domain Controllers</span><span class="ad-desc">— WIN-2ALUAB97MUI</span></div>
+    </div>
+
+    <!-- Commands -->
+    <div class="section-label">Commands Used</div>
+    <div class="ad-diagram">
+      <div class="ad-row"><span class="ad-icon">⌨️</span><span class="ad-name">gpupdate /force</span><span class="ad-desc">— forces Group Policy to refresh immediately instead of waiting for the next cycle</span></div>
+      <div class="ad-row"><span class="ad-icon">⌨️</span><span class="ad-name">gpresult /r</span><span class="ad-desc">— shows which GPOs are currently applied, to confirm a policy actually took effect</span></div>
+      <div class="ad-row"><span class="ad-icon">⌨️</span><span class="ad-name">nslookup</span><span class="ad-desc">— queries DNS; the first check when a computer can't find the domain</span></div>
+      <div class="ad-row"><span class="ad-icon">⌨️</span><span class="ad-name">ping</span><span class="ad-desc">— tests basic network connectivity to the domain controller or another host</span></div>
+      <div class="ad-row"><span class="ad-icon">⌨️</span><span class="ad-name">hostname</span><span class="ad-desc">— shows the local computer's name, to confirm which machine you're on</span></div>
+      <div class="ad-row"><span class="ad-icon">⌨️</span><span class="ad-name">whoami</span><span class="ad-desc">— shows the currently logged-in user (add /groups to see their memberships)</span></div>
     </div>
 
     <!-- Screenshots -->
@@ -546,11 +659,39 @@ h2 {
       </div>
       <div class="learning-item">
         <span class="learning-icon">📋</span>
-        <span><strong>Naming Conventions</strong> — Following a consistent naming convention for users (e.g. first name + last initial) is a sysadmin best practice to keep accounts organised and predictable.</span>
+        <span><strong>Naming Conventions</strong> — Following a consistent naming convention for users and admin accounts is a sysadmin best practice that keeps a growing directory organised and predictable.</span>
       </div>
       <div class="learning-item">
         <span class="learning-icon">🔑</span>
-        <span><strong>Group Membership</strong> — Adding a user to a Security Group grants them the permissions assigned to that group — e.g. Finance group members can access the Finance shared folder.</span>
+        <span><strong>Group Membership</strong> — Adding or removing a user from a Security Group immediately grants or revokes whatever that group is permissioned to access — no need to touch the resource itself.</span>
+      </div>
+      <div class="learning-item">
+        <span class="learning-icon">✏️</span>
+        <span><strong>User Lifecycle Management</strong> — Creating an account is only the start. Editing properties, disabling a leaver's account, and moving someone's OU and group membership when they change departments are all part of keeping a directory accurate over time.</span>
+      </div>
+      <div class="learning-item">
+        <span class="learning-icon">🔓</span>
+        <span><strong>Password Support & Account Lockouts</strong> — Resetting a password and forcing a change at next logon covers most day-one helpdesk tickets. A lockout (too many bad attempts) and a login failure (expired or disabled account) look identical to the user but need different fixes.</span>
+      </div>
+      <div class="learning-item">
+        <span class="learning-icon">🗄️</span>
+        <span><strong>Share vs. NTFS (Security) Permissions</strong> — Share permissions control access over the network; NTFS permissions control access on disk. When a user hits both, the more restrictive of the two always wins.</span>
+      </div>
+      <div class="learning-item">
+        <span class="learning-icon">🛡️</span>
+        <span><strong>Delegation & Least Privilege</strong> — Rather than handing out the built-in Domain Admin account, delegating limited control over one OU to a named admin account keeps each admin's reach no bigger than the job requires.</span>
+      </div>
+      <div class="learning-item">
+        <span class="learning-icon">📜</span>
+        <span><strong>Group Policy Objects (GPOs)</strong> — A GPO linked to an OU applies a setting to every user or computer inside it at once — far faster than configuring a restriction machine by machine.</span>
+      </div>
+      <div class="learning-item">
+        <span class="learning-icon">🖥️</span>
+        <span><strong>Computer Accounts & Trust Relationships</strong> — Computers get their own AD account, just like users. When that account and the machine's local record fall out of sync, Windows throws a "trust relationship has failed" error — fixed by resetting the account or rejoining the domain.</span>
+      </div>
+      <div class="learning-item">
+        <span class="learning-icon">🧭</span>
+        <span><strong>Login Troubleshooting</strong> — Most domain login problems trace back to a short list of causes: expired or locked account, broken domain connectivity, or a computer account out of sync. Checking these in order narrows the problem fast.</span>
       </div>
     </div>
 
@@ -560,15 +701,28 @@ h2 {
       <span class="skill-tag tag-blue">Windows Server 2019</span>
       <span class="skill-tag tag-blue">Active Directory DS</span>
       <span class="skill-tag tag-blue">Server Manager</span>
+      <span class="skill-tag tag-blue">Share Permissions</span>
+      <span class="skill-tag tag-blue">NTFS / Security Permissions</span>
       <span class="skill-tag tag-red">Domain Controller Setup</span>
       <span class="skill-tag tag-red">Forest & Domain Config</span>
+      <span class="skill-tag tag-red">Delegated Administration</span>
+      <span class="skill-tag tag-red">Least-Privilege Admin</span>
+      <span class="skill-tag tag-red">Group Policy Objects (GPO)</span>
+      <span class="skill-tag tag-red">GPO Restriction Policies</span>
       <span class="skill-tag tag-green">ADUC (dsa.msc)</span>
-      <span class="skill-tag tag-green">OU Creation</span>
+      <span class="skill-tag tag-green">OU Creation & Management</span>
       <span class="skill-tag tag-green">User Account Management</span>
+      <span class="skill-tag tag-green">Account Enable/Disable</span>
       <span class="skill-tag tag-green">Security Group Management</span>
-      <span class="skill-tag tag-brown">Group Membership</span>
+      <span class="skill-tag tag-green">Group Membership (Add/Remove)</span>
+      <span class="skill-tag tag-brown">User Lifecycle Management</span>
+      <span class="skill-tag tag-brown">Department Transfer Process</span>
+      <span class="skill-tag tag-brown">Password Reset & Force Change</span>
       <span class="skill-tag tag-brown">Domain Join (client)</span>
-      <span class="skill-tag tag-brown">AD Naming Conventions</span>
+      <span class="skill-tag tag-brown">Computer Account Management</span>
+      <span class="skill-tag tag-brown">Trust Relationship Troubleshooting</span>
+      <span class="skill-tag tag-brown">Login/Access Troubleshooting</span>
+      <span class="skill-tag tag-brown">Command-Line Diagnostics</span>
     </div>
 
     <!-- Footer -->
@@ -578,7 +732,7 @@ h2 {
         <div style="font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--muted);">SAD622S · NUST · Faculty of Computing and Informatics</div>
       </div>
       <div class="footer-meta">
-        Completed: 3 June 2026<br>
+        Initial setup: 3 June 2026 · Extended: 18 June 2026<br>
         Environment: Windows Server 2019 (VM)<br>
         Domain: jay.local
       </div>
