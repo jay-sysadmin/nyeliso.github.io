@@ -4,6 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Likubangwa Jay-Z Nyeliso | Sysadmin & IT Professional</title>
+  <meta name="description" content="Likubangwa Jay-Z Nyeliso — System Administrator and BSc Computer Science student in Windhoek, Namibia. Portfolio covering server infrastructure, networking, and Active Directory projects."/>
+  <meta property="og:title" content="Likubangwa Jay-Z Nyeliso | Sysadmin & IT Professional"/>
+  <meta property="og:description" content="System Administrator and BSc Computer Science student specializing in Linux infrastructure, enterprise networking, and Active Directory administration."/>
+  <meta property="og:type" content="website"/>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230a0a0f'/%3E%3Ctext x='32' y='43' font-family='monospace' font-size='26' font-weight='700' fill='%2300e5ff' text-anchor='middle'%3ELN%3C/text%3E%3C/svg%3E"/>
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet"/>
   <style>
     :root {
@@ -563,9 +568,8 @@
     /* CONTACT */
     .contact-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 4rem;
-      align-items: start;
+      grid-template-columns: 1fr;
+      max-width: 640px;
     }
 
     .contact-info p {
@@ -730,52 +734,64 @@
         <div class="skill-icon">🖥️</div>
         <div class="skill-cat-title">Hardware &amp; Infrastructure</div>
         <div class="skill-tags">
-          <span class="skill-tag">Hardware Installation</span>
+          <span class="skill-tag">Hardware Setup</span>
           <span class="skill-tag">Server Configuration</span>
           <span class="skill-tag">HP Servers</span>
-          <span class="skill-tag">Supermicro</span>
+          <span class="skill-tag">Supermicro Servers</span>
           <span class="skill-tag">SSD Replication</span>
-          <span class="skill-tag">BIOS/BMC Config</span>
+          <span class="skill-tag">SSD Swapping</span>
+          <span class="skill-tag">BIOS/BMC Configuration</span>
           <span class="skill-tag">Firmware Upgrades</span>
+          <span class="skill-tag">Storage/RAM Installation</span>
         </div>
       </div>
       <div class="skill-category">
         <div class="skill-icon">🌐</div>
         <div class="skill-cat-title">Networking</div>
         <div class="skill-tags">
-          <span class="skill-tag">Packet Tracer</span>
+          <span class="skill-tag">Cisco Packet Tracer</span>
           <span class="skill-tag">IP Configuration</span>
-          <span class="skill-tag">NIC Setup</span>
+          <span class="skill-tag">NIC Configuration</span>
           <span class="skill-tag">Fortinet Firewalls</span>
-          <span class="skill-tag">Wireless APs</span>
+          <span class="skill-tag">Wireless Access Points</span>
           <span class="skill-tag">Network Troubleshooting</span>
         </div>
       </div>
       <div class="skill-category">
         <div class="skill-icon">🐧</div>
-        <div class="skill-cat-title">Operating Systems</div>
+        <div class="skill-cat-title">Operating Systems &amp; Virtualization</div>
         <div class="skill-tags">
           <span class="skill-tag">Windows Server</span>
-          <span class="skill-tag">Active Directory (AD DS)</span>
-          <span class="skill-tag">Group Policy (GPO)</span>
-          <span class="skill-tag">OU &amp; Group Management</span>
-          <span class="skill-tag">Delegated Administration</span>
-          <span class="skill-tag">OS Installations</span>
           <span class="skill-tag">Linux Ubuntu</span>
           <span class="skill-tag">Linux Mint</span>
           <span class="skill-tag">FreeBSD</span>
-          <span class="skill-tag">Linux CLI</span>
           <span class="skill-tag">VirtualBox</span>
+          <span class="skill-tag">OS Installations</span>
+          <span class="skill-tag">macOS</span>
+          <span class="skill-tag">VMware</span>
+        </div>
+      </div>
+      <div class="skill-category">
+        <div class="skill-icon">🔐</div>
+        <div class="skill-cat-title">Active Directory &amp; Identity Management</div>
+        <div class="skill-tags">
+          <span class="skill-tag">Active Directory Domain Services (AD DS)</span>
+          <span class="skill-tag">Group Policy Objects (GPO)</span>
+          <span class="skill-tag">OU &amp; Group Management</span>
+          <span class="skill-tag">Delegated Administration</span>
+          <span class="skill-tag">Shared Folders</span>
+          <span class="skill-tag">Permissions</span>
+          <span class="skill-tag">ADUC</span>
         </div>
       </div>
       <div class="skill-category">
         <div class="skill-icon">📄</div>
-        <div class="skill-cat-title">Documentation &amp; Management</div>
+        <div class="skill-cat-title">Documentation &amp; Operations</div>
         <div class="skill-tags">
           <span class="skill-tag">SOP Authoring</span>
           <span class="skill-tag">Technical Documentation</span>
           <span class="skill-tag">Inventory Management</span>
-          <span class="skill-tag">Email Server Administration</span>
+          <span class="skill-tag">Email Server Admin</span>
           <span class="skill-tag">Netdata Monitoring</span>
         </div>
       </div>
@@ -790,7 +806,6 @@
       <div class="project-card">
         <div class="project-header">
           <span class="project-num">001</span>
-          <span class="project-arrow">↗</span>
         </div>
         <h3 class="project-title">PEPFAR Digital Infrastructure</h3>
         <p class="project-desc">
@@ -888,10 +903,10 @@
           <span style="font-family:'Space Mono',monospace;font-size:0.6rem;padding:0.2rem 0.6rem;background:rgba(0,229,255,0.1);border:1px solid rgba(0,229,255,0.25);color:var(--accent);letter-spacing:0.08em;white-space:nowrap;">LAB REPORT</span>
         </div>
         <p class="project-desc">
-          Built a Windows Server 2019 domain environment (jay.local) from scratch — promoted the server to Domain Controller, structured OUs across departments, created 7 departmental security groups, set up delegated least-privilege admin accounts, configured file-share/NTFS permissions and a Group Policy restriction, and resolved a computer trust-relationship issue across domain-joined clients.
+          Built a Windows Server 2022 Active Directory domain (corp.local) from scratch — promoted the server to Domain Controller, structured OUs across departments including a dedicated Admins OU, created seven departmental security groups, configured two delegated least-privilege admin accounts, set up file-share/NTFS permissions and a Group Policy restriction, and resolved a computer trust-relationship issue across domain-joined clients.
         </p>
         <div class="project-tech">
-          <span class="tech-badge">Windows Server 2019</span>
+          <span class="tech-badge">Windows Server 2022</span>
           <span class="tech-badge">Active Directory DS</span>
           <span class="tech-badge">Domain Controller</span>
           <span class="tech-badge">GPO</span>
@@ -913,7 +928,7 @@
 
     <!-- WORK HISTORY -->
     <h2 class="section-title">Work History</h2>
-    <div class="exp-item">
+    <div class="exp-item" style="border-bottom: none;">
       <div class="exp-date">Aug 2025 – Nov 2025</div>
       <div>
         <div class="exp-role">System Administrator / IT Officer</div>
@@ -927,32 +942,29 @@
         </ul>
       </div>
     </div>
+  </section>
 
-    <!-- EDUCATION — visually separated -->
-    <div style="margin-top: 4rem; padding-top: 3rem; border-top: 2px solid var(--border);">
-      <div class="section-label" style="margin-bottom: 1.5rem;">04b // Education</div>
-      <h2 class="section-title">Academic Background</h2>
-      <div class="exp-item" style="border-bottom: none;">
-        <div class="exp-date">2023 – 2026</div>
-        <div>
-          <div class="exp-role">BSc Computer Science (NQF Level 7)</div>
-          <div class="exp-company" style="color: var(--green);">Namibia University of Science and Technology (NUST)</div>
-          <ul class="exp-points" style="margin-bottom: 2rem;">
-            <li>Distinction in IT Infrastructure Administration &amp; Services (83), Systems Virtualisation (76), Applied Statistics &amp; Probability (76), and Wireless Technologies (75)</li>
-            <li>Credit in Innovation &amp; Entrepreneurship (69), Database Administration (66), and Data Networks (63)</li>
-            <li>Coursework in Advanced Network Security, Data Centre Infrastructure Management, Operating Systems, and Information Systems Security Essentials</li>
-          </ul>
-
-        </div>
+  <!-- EDUCATION -->
+  <section id="education">
+    <div class="section-label">05 // Education</div>
+    <h2 class="section-title">Academic Background</h2>
+    <div class="exp-item" style="border-bottom: none;">
+      <div class="exp-date">2023 – 2026</div>
+      <div>
+        <div class="exp-role">BSc Computer Science (NQF Level 7)</div>
+        <div class="exp-company" style="color: var(--green);">Namibia University of Science and Technology (NUST)</div>
+        <ul class="exp-points" style="margin-bottom: 2rem;">
+          <li>Distinction in IT Infrastructure Administration &amp; Services (83), Systems Virtualisation (76), Applied Statistics &amp; Probability (76), and Wireless Technologies (75)</li>
+          <li>Credit in Innovation &amp; Entrepreneurship (69), Database Administration (66), and Data Networks (63)</li>
+          <li>Coursework in Advanced Network Security, Data Centre Infrastructure Management, Operating Systems, and Information Systems Security Essentials</li>
+        </ul>
       </div>
-
     </div>
-
   </section>
 
   <!-- CERTIFICATIONS -->
   <section id="certs">
-    <div class="section-label">05 // Certifications</div>
+    <div class="section-label">06 // Certifications</div>
     <h2 class="section-title">Credentials</h2>
     <div class="certs-grid">
       <div class="cert-card">
@@ -981,7 +993,7 @@
 
   <!-- CONTACT -->
   <section id="contact">
-    <div class="section-label">06 // Contact</div>
+    <div class="section-label">07 // Contact</div>
     <h2 class="section-title">Get In Touch</h2>
     <div class="contact-grid">
       <div class="contact-info">
@@ -1019,20 +1031,6 @@
               <div class="contact-detail">Likubangwa Nyeliso</div>
             </div>
           </a>
-        </div>
-      </div>
-      <div>
-        <div class="stat-card" style="padding: 2rem;">
-          <div style="font-family: 'Space Mono', monospace; font-size: 0.7rem; color: var(--muted); margin-bottom: 1rem; letter-spacing: 0.1em;">LOCATION</div>
-          <div style="font-size: 1.5rem; font-weight: 800; margin-bottom: 0.5rem;">Windhoek, Namibia</div>
-          <div style="color: var(--muted); font-size: 0.9rem; line-height: 1.6;">
-            Open to remote work and on-site opportunities across Namibia and Southern Africa.
-          </div>
-          <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border);">
-            <div style="font-family: 'Space Mono', monospace; font-size: 0.7rem; color: var(--muted); margin-bottom: 0.5rem; letter-spacing: 0.1em;">EDUCATION</div>
-            <div style="font-weight: 600;">BSc Computer Science (NQF 7)</div>
-            <div style="color: var(--accent); font-size: 0.85rem; font-family: 'Space Mono', monospace;">NUST · 2023 – 2026</div>
-          </div>
         </div>
       </div>
     </div>
