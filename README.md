@@ -7,7 +7,7 @@
 System Administrator and aspiring infrastructure engineer based in Windhoek, Namibia.
 Specializing in Linux infrastructure, enterprise networking, and Active Directory administration.
 
-[![Portfolio](https://img.shields.io/badge/Portfolio-nyeliso--223082317.github.io-00e5ff?style=flat-square)](https://nyeliso-223082317.github.io)
+[![Portfolio](https://img.shields.io/badge/Portfolio-nyeliso--223082317.github.io-00e5ff?style=flat-square)](https://jay-sysadmin.github.io/nyeliso.github.io)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Likubangwa%20Nyeliso-0A66C2?style=flat-square&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/likubangwa-nyeliso-39367b25b/)
 [![Email](https://img.shields.io/badge/Email-jaynyeliso%40gmail.com-D14836?style=flat-square&logo=gmail&logoColor=white)](mailto:jaynyeliso@gmail.com)
 
@@ -83,12 +83,12 @@ Specializing in Linux infrastructure, enterprise networking, and Active Director
 
 | Project | Description | Stack |
 |---|---|---|
-| [**Active Directory Administration**](https://nyeliso-223082317.github.io/AD_Portfolio_Lab.html) | Windows Server 2022 AD domain (`corp.local`) built from scratch — OU structure including a dedicated Admins OU, 7 departmental security groups, 2 delegated least-privilege admin accounts, GPO restrictions, NTFS permissions | AD DS · GPO · ADUC |
-| [**Linux Enterprise Email Server**](https://nyeliso-223082317.github.io/Linux_Email_Server_Lab.html) | Full enterprise mail system on Linux Mint via Mailcow — TLS 1.3 encryption, WireGuard VPN, ClamAV antivirus, SOGo webmail, Postfix/Dovecot | Mailcow · Docker · WireGuard |
-| [**Tier-1 Data Centre Design**](https://nyeliso-223082317.github.io/Data_Centre_Design_Lab.html) | Complete Tier-1 spec across 6×42U racks, 65 active devices — power planning, altitude-derated UPS sizing for Windhoek (1,654 m ASL), precision cooling | Rack Design · UPS Sizing · Precision Cooling |
-| [**Netdata Server Monitoring**](https://nyeliso-223082317.github.io/Netdata_Monitoring_Lab.html) | Real-time performance monitoring on a Linux Ubuntu VM — CPU, RAM, disk I/O, network metrics, live alerting | Netdata · systemctl |
+| [**Active Directory Administration**](https://jay-sysadmin.github.io/nyeliso.github.io/AD_Portfolio_Lab.html) | Windows Server 2022 AD domain (`corp.local`) built from scratch — OU structure including a dedicated Admins OU, 7 departmental security groups, 2 delegated least-privilege admin accounts, GPO restrictions, NTFS permissions | AD DS · GPO · ADUC |
+| [**Linux Enterprise Email Server**](https://jay-sysadmin.github.io/nyeliso.github.io/Linux_Email_Server_Lab.html) | Full enterprise mail system on Linux Mint via Mailcow — TLS 1.3 encryption, WireGuard VPN, ClamAV antivirus, SOGo webmail, Postfix/Dovecot | Mailcow · Docker · WireGuard |
+| [**Tier-1 Data Centre Design**](https://jay-sysadmin.github.io/nyeliso.github.io/Data_Centre_Design_Lab.html) | Complete Tier-1 spec across 6×42U racks, 65 active devices — power planning, altitude-derated UPS sizing for Windhoek (1,654 m ASL), precision cooling | Rack Design · UPS Sizing · Precision Cooling |
+| [**Netdata Server Monitoring**](https://jay-sysadmin.github.io/nyeliso.github.io/Netdata_Monitoring_Lab.html) | Real-time performance monitoring on a Linux Ubuntu VM — CPU, RAM, disk I/O, network metrics, live alerting | Netdata · systemctl |
 
-→ Full portfolio: **[nyeliso-223082317.github.io](https://nyeliso-223082317.github.io)**
+→ Full portfolio: **[nyeliso-223082317.github.io](https://jay-sysadmin.github.io/nyeliso.github.io)**
 
 ---
 
