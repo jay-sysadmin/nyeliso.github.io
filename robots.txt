@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://nyeliso-223082317.github.io/sitemap.xml
