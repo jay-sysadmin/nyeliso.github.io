@@ -434,8 +434,8 @@
 <body>
 
   <nav>
-    <a class="nav-logo" href="index.html">LN://PORTFOLIO</a>
-    <a class="nav-back" href="index.html">← Back to Portfolio</a>
+    <a class="nav-logo" href="portfolio.html">LN://PORTFOLIO</a>
+    <a class="nav-back" href="portfolio.html">← Back to Portfolio</a>
   </nav>
 
   <div class="container">
@@ -443,15 +443,16 @@
     <!-- HEADER -->
     <div class="lab-header">
       <div class="lab-tag">006 // Lab Report</div>
-      <h1 class="lab-title">DHCP Server Configuration</h1>
+      <h1 class="lab-title">DHCP, DNS, Web Server &amp; Telnet</h1>
       <p class="lab-subtitle">
-        Configured a Cisco 2911 router as a DHCP server within a simulated corporate network using Cisco Packet Tracer. The lab covers IP pool setup, static exclusions, DNS assignment, and end-to-end verification across three DHCP client PCs and a static server.
+        A complete small office network built in Cisco Packet Tracer — router-based DHCP for automatic IP assignment, a dedicated DNS server resolving the <code style="font-family:'Space Mono',monospace;font-size:0.85em;color:var(--accent);">mylab.com</code> domain, an HTTP web server, and Telnet remote management configured on the router with VTY lines and two-level authentication.
       </p>
       <div class="lab-meta">
         <span class="meta-badge tool">Cisco Packet Tracer</span>
         <span class="meta-badge tool">Cisco IOS CLI</span>
         <span class="meta-badge env">Router 2911</span>
         <span class="meta-badge env">Switch 2960</span>
+        <span class="meta-badge env">Server-PT</span>
         <span class="meta-badge type">Networking Lab</span>
       </div>
     </div>
@@ -726,10 +727,174 @@ Reply from 192.168.10.1: bytes=32 time<1ms TTL=255</span></pre>
       </div>
     </div>
 
+    <!-- DNS & WEB SERVER CONFIGURATION -->
+    <div class="section">
+      <div class="section-label">08 // DNS &amp; Web Server</div>
+      <div class="section-title">Server Configuration</div>
+      <div class="section-body" style="margin-bottom:1.5rem;">
+        The dedicated Server-PT at <strong style="color:var(--text);">192.168.10.2</strong> runs both DNS and HTTP services — handling name resolution for the lab domain and hosting the internal web page.
+      </div>
+
+      <div class="code-block">
+        <div class="code-block-label">Step 1 — Set static IP on Server-PT</div>
+        <pre><span class="code-comment">Server → Desktop → IP Configuration → Static</span>
+<span class="code-cmd">IP Address:      192.168.10.2
+Subnet Mask:     255.255.255.0
+Default Gateway: 192.168.10.1
+DNS Server:      192.168.10.2</span></pre>
+      </div>
+
+      <div class="code-block">
+        <div class="code-block-label">Step 2 — Enable DNS Service &amp; add A records</div>
+        <pre><span class="code-comment">Server → Services → DNS → ON
+
+Add A Records:</span>
+<span class="code-cmd">Name: www.mylab.com       Type: A   Address: 192.168.10.2
+Name: server.mylab.com    Type: A   Address: 192.168.10.2</span></pre>
+      </div>
+
+      <div class="code-block">
+        <div class="code-block-label">Step 3 — Enable HTTP Web Server</div>
+        <pre><span class="code-comment">Server → Services → HTTP → ON
+(Optional: edit index.html under Edit File to customise the hosted page)</span></pre>
+      </div>
+    </div>
+
+    <!-- DNS VERIFICATION -->
+    <div class="section">
+      <div class="section-label">09 // DNS &amp; Web Verification</div>
+      <div class="section-title">Testing Name Resolution &amp; HTTP</div>
+
+      <table class="verify-table">
+        <thead>
+          <tr>
+            <th>Test</th>
+            <th>Command / Step</th>
+            <th>Expected Result</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>PC1 → Router</td><td>ping 192.168.10.1</td><td style="color:var(--green);">Reply received</td></tr>
+          <tr><td>PC1 → Server</td><td>ping 192.168.10.2</td><td style="color:var(--green);">Reply received</td></tr>
+          <tr><td>PC1 → PC2</td><td>ping 192.168.10.4</td><td style="color:var(--green);">Reply received</td></tr>
+          <tr><td>Web by IP</td><td>Browser → 192.168.10.2</td><td style="color:var(--green);">Web page loads</td></tr>
+          <tr><td>Web by name</td><td>Browser → www.mylab.com</td><td style="color:var(--green);">Web page loads</td></tr>
+          <tr><td>DNS lookup</td><td>nslookup www.mylab.com</td><td style="color:var(--green);">Returns 192.168.10.2</td></tr>
+        </tbody>
+      </table>
+
+      <div class="code-block">
+        <div class="code-block-label">PC verification commands</div>
+        <pre><span class="code-cmd">ipconfig /all</span>
+<span class="code-comment">Shows IP, Gateway, DNS server, and lease info</span>
+
+<span class="code-cmd">nslookup www.mylab.com</span>
+<span class="code-comment">Should resolve to 192.168.10.2</span></pre>
+      </div>
+    </div>
+
+    <!-- TELNET -->
+    <div class="section">
+      <div class="section-label">10 // Telnet Remote Access</div>
+      <div class="section-title">Remote Router Management via Telnet</div>
+      <div class="section-body" style="margin-bottom:1.5rem;">
+        Telnet allows you to remotely access and configure the router from any PC on the network — no physical console cable needed. VTY (Virtual Terminal) lines control how many simultaneous remote sessions are allowed.
+      </div>
+
+      <div class="code-block">
+        <div class="code-block-label">Router — Configure VTY lines &amp; passwords</div>
+        <pre><span class="code-cmd">configure terminal
+line vty 0 4</span>
+<span class="code-comment">! Enter VTY config — allows up to 5 simultaneous connections</span>
+<span class="code-cmd">password cisco123</span>
+<span class="code-comment">! Telnet login password</span>
+<span class="code-cmd">login
+exit
+enable secret admin123</span>
+<span class="code-comment">! Password required to enter privileged EXEC (#) mode</span>
+<span class="code-cmd">end
+copy running-config startup-config</span></pre>
+      </div>
+
+      <div class="code-block">
+        <div class="code-block-label">PC — Connect to router via Telnet</div>
+        <pre><span class="code-cmd">telnet 192.168.10.1</span>
+<span class="code-comment">Password: </span><span class="code-cmd">cisco123</span>
+<span class="code-comment">! Now in User EXEC mode</span>
+<span class="code-cmd">Router> enable</span>
+<span class="code-comment">Password: </span><span class="code-cmd">admin123</span>
+<span class="code-comment">! Now in Privileged EXEC mode — full access</span>
+<span class="code-cmd">Router#</span></pre>
+      </div>
+
+      <div class="section-title" style="font-size:1.1rem;margin-top:2rem;margin-bottom:1rem;">Telnet vs Console vs SSH</div>
+      <table class="verify-table">
+        <thead>
+          <tr><th>Feature</th><th>Console</th><th>Telnet</th><th>SSH</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Connection</td><td>Direct cable</td><td>Over network</td><td>Over network</td></tr>
+          <tr><td>Security</td><td>Physical access</td><td style="color:#f87171;">Unencrypted</td><td style="color:var(--green);">Encrypted</td></tr>
+          <tr><td>Use case</td><td>Initial setup</td><td>Lab / legacy</td><td>Production</td></tr>
+          <tr><td>Port</td><td>Physical</td><td>23</td><td>22</td></tr>
+        </tbody>
+      </table>
+
+      <div class="code-block">
+        <div class="code-block-label">Telnet verification commands</div>
+        <pre><span class="code-cmd">show users</span>
+<span class="code-comment">Shows who is connected via Telnet</span>
+
+<span class="code-cmd">show line</span>
+<span class="code-comment">Shows VTY line configurations</span>
+
+<span class="code-cmd">show running-config | include vty</span>
+<span class="code-comment">Shows Telnet configuration only</span></pre>
+      </div>
+    </div>
+
+    <!-- SERVICES SUMMARY -->
+    <div class="section">
+      <div class="section-label">11 // Services Summary</div>
+      <div class="section-title">All Services Configured</div>
+      <div class="outcomes-grid">
+        <div class="outcome-card">
+          <div class="ok">✓ ACTIVE</div>
+          <div class="label">DHCP Service</div>
+          <div class="detail">Pool: AD_LAB_POOL · Range: .3–.254 · Lease: 7 days</div>
+        </div>
+        <div class="outcome-card">
+          <div class="ok">✓ ACTIVE</div>
+          <div class="label">DNS Service</div>
+          <div class="detail">www.mylab.com → .2 · server.mylab.com → .2</div>
+        </div>
+        <div class="outcome-card">
+          <div class="ok">✓ ACTIVE</div>
+          <div class="label">HTTP Web Server</div>
+          <div class="detail">192.168.10.2 · Port 80 · index.html served</div>
+        </div>
+        <div class="outcome-card">
+          <div class="ok">✓ ACTIVE</div>
+          <div class="label">Telnet Remote Access</div>
+          <div class="detail">VTY 0–4 · cisco123 / admin123 · Port 23</div>
+        </div>
+        <div class="outcome-card">
+          <div class="ok">✓ CONFIRMED</div>
+          <div class="label">Name Resolution</div>
+          <div class="detail">nslookup www.mylab.com → 192.168.10.2</div>
+        </div>
+        <div class="outcome-card">
+          <div class="ok">✓ CONFIRMED</div>
+          <div class="label">Remote Management</div>
+          <div class="detail">Telnet from any PC on 192.168.10.0/24</div>
+        </div>
+      </div>
+    </div>
+
     <!-- FOOTER -->
     <div class="lab-footer">
-      <a class="footer-back" href="index.html">← Back to Portfolio</a>
-      <div class="footer-label">DHCP Server Lab · Cisco Packet Tracer · 2026</div>
+      <a class="footer-back" href="portfolio.html">← Back to Portfolio</a>
+      <div class="footer-label">DHCP + DNS + Web Server + Telnet Lab · Cisco Packet Tracer · 2026</div>
     </div>
 
   </div>
