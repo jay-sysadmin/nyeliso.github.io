@@ -49,4 +49,34 @@
     <priority>0.8</priority>
   </url>
 
+  <url>
+    <loc>https://jay-sysadmin.github.io/nyeliso.github.io/Basic_Network_Lab.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://jay-sysadmin.github.io/nyeliso.github.io/VLAN_Basics_Lab.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://jay-sysadmin.github.io/nyeliso.github.io/Static_Routing_Lab.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://jay-sysadmin.github.io/nyeliso.github.io/LAN_Internet_Lab.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://jay-sysadmin.github.io/nyeliso.github.io/SSH_Lab.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
 </urlset>
